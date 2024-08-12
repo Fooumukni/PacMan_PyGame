@@ -704,6 +704,120 @@ class Game:
                     gameBoard[i][j] = 5
                     pygame.draw.circle(screen, (pelletColor),(j * tile + tile//2, i * tile + tile//2), tile//2)
 
+
+    def checkSurroundings(self):
+        """
+        Kiểm tra xung quanh của Pacman và các Ghost để phát hiện va chạm.
+        """
+        # Check if pacman got killed
+        for ghost in self.ghosts:
+            if self.touchingPacman(ghost.row, ghost.col) and not ghost.attacked:
+                if self.lives == 1:
+                    print("Game Over") 
+                    self.forcePlayMusic("death_1.wav")
+                    self.gameOver = True
+                    # Remove the ghosts from the screen
+                    for ghost in self.ghosts:
+                        self.drawTilesAround(ghost.row, ghost.col)
+                    self.drawTilesAround(self.pacman.row, self.pacman.col)
+                    self.pacman.draw(self)
+                    pygame.display.update()
+                    pause(10000000)
+                    return
+                
+                self.started = False
+                self.forcePlayMusic("pacman_death.wav")
+                pygame.time.wait(2000)
+                reset()
+
+            elif self.touchingPacman(ghost.row, ghost.col) and ghost.isAttacked() and not ghost.isDead():
+                ghost.setDead(True)
+                ghost.setTarget()
+                ghost.ghostSpeed = 1
+                ghost.row = math.floor(ghost.row)
+                ghost.col = math.floor(ghost.col)
+                self.score += self.ghostScore
+                self.points.append([ghost.row, ghost.col, self.ghostScore, 0])
+                self.ghostScore *= 2
+                self.forcePlayMusic("eat_ghost.wav")
+                
+                # Pausar el juego y mostrar ejercicio de derivadas
+                self.pauseAndShowExercise()
+                
+                pygame.display.update()
+
+    def pauseAndShowExercise(self):
+        """
+        Pausa el juego, muestra un ejercicio de derivadas, y verifica la respuesta del jugador.
+        """
+        # Pausar el juego
+        self.paused = True
+
+        # Ejercicio de derivadas
+        exercise = "¿Cuál es la derivada de f(x) = 3x^2 + 5x + 2?"
+        correct_answer = "6x + 5"
+
+        font = pygame.font.Font(None, 36)
+        input_box = pygame.Rect(50, height // 2, 600, 50)
+        color_inactive = pygame.Color('lightskyblue3')
+        color_active = pygame.Color('dodgerblue2')
+        color = color_inactive
+        active = False
+        text = ''
+        done = False
+
+        while not done:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    exit()
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if input_box.collidepoint(event.pos):
+                        active = True
+                    else:
+                        active = False
+                    color = color_active if active else color_inactive
+                if event.type == pygame.KEYDOWN:
+                    if active:
+                        if event.key == pygame.K_RETURN:
+                            if text == correct_answer:
+                                done = True
+                            else:
+                                text = ''
+                        elif event.key == pygame.K_BACKSPACE:
+                            text = text[:-1]
+                        else:
+                            text += event.unicode
+
+            screen.fill((0, 0, 0))
+            txt_surface = font.render(exercise, True, pygame.Color('white'))
+            screen.blit(txt_surface, (input_box.x + 5, input_box.y - 30))
+            txt_surface = font.render(text, True, color)
+            width = max(600, txt_surface.get_width() + 10)
+            input_box.w = width
+            screen.blit(txt_surface, (input_box.x + 5, input_box.y + 5))
+            pygame.draw.rect(screen, color, input_box, 2)
+            pygame.display.update()
+
+            pygame.display.flip()
+
+        # Reanudar el juego
+        self.paused = False
+        pygame.display.update()
+        game.render()
+
+    
+    def displayDerivativeExercise(self):
+        """
+        Mostrar un ejercicio de derivadas en la pantalla.
+        """
+        font = pygame.font.Font(None, 36)
+        text = font.render("Resuelve: d/dx (3x^2 + 2x + 1)", True, (255, 255, 255))
+        screen.blit(text, (width // 2 - text.get_width() // 2, height // 2 - text.get_height() // 2))
+        pygame.display.update()
+
+    
+
     def getCount(self):
         """
         Đếm xem Pacman đã ăn được bao nhiêu viên thuốc.

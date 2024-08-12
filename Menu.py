@@ -40,19 +40,18 @@ class MenuElements:
                 "text015.png", "text015.png", "text015.png",
                 "text236.png", "text200.png", "text205.png", "text202.png", "text217.png", "text236.png"
             ],
-            # Orange Ghost
+            # Jala U 
             [
-                "text451.png", "text015.png", "text363.png", "text015.png", "text272.png", "text270.png", "text266.png", "text260.png", "text281.png",
-                "text015.png", "text015.png", "text015.png", "text015.png", "text015.png",
-                "text300.png", "text258.png", "text267.png", "text281.png", "text259.png", "text260.png", "text300.png"
+                "text453.png", "text015.png", "text235.png", "text015.png", "text201.png", "text192.png", "text203.png", "text192.png", "text015.png" , "text213.png"
+
             ]
         ]
         # Draw Pacman & Ghosts
         self.event = ["text449.png", "text015.png", "text452.png", "text015.png", "text015.png", "text448.png", "text453.png", "text015.png", "text015.png", "text015.png", "text453.png"]
         # Draw Platform Line
         self.wall = ["text454.png", "text454.png", "text454.png", "text454.png", "text454.png", "text454.png", "text454.png", "text454.png", "text454.png", "text454.png", "text454.png", "text454.png", "text454.png", "text454.png", "text454.png"]
-        # "Duy Pham 2024"     
-        self.credit = ["text387.png", "text405.png", "text409.png", "text015.png", "text400.png", "text391.png", "text384.png", "text396.png", "text015.png", "text418.png", "text416.png", "text418.png", "text420.png"]
+        # "Calculo"     
+        self.credit = ["text440.png", "text440.png", "text066.png", "text064.png", "text075.png", "text066.png", "text085.png", "text075.png", "text078.png","text440.png", "text418.png", "text440.png"]
         # "Press Space to Play"
         self.toplay = ["text016.png", "text018.png", "text004.png", "text019.png", "text019.png", "text015.png", "text019.png", "text016.png", "text000.png", "text002.png", "text004.png", "text015.png", "text020.png", "text014.png", "text015.png", "text016.png", "text011.png", "text000.png", "text025.png"]
         # "Press Enter to Exit"
@@ -200,5 +199,3 @@ class displayMenu(MenuElements):
         pygame.display.update()  
 livesLoc = [[34, 3], [34, 1]] 
 print(livesLoc[1][0])
-
-
